@@ -14,7 +14,8 @@ public class SHA3Helper {
         return Hex.toHexString(hash256(parts));
     }
 
-    public static String digestToHey(byte[] digest) {
+    // byte-Array zur besseren Lesbarkeit in String verwandeln
+    public static String digestToHex(byte[] digest) {
         return Hex.toHexString(digest);
     }
 

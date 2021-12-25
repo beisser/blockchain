@@ -1,49 +1,70 @@
 package de.beisser.blockchain.models;
 
-public class BlockHeader {
+import de.beisser.blockchain.utility.SHA3Helper;
 
-    private int version;
-    private int nonce = 0;
-    private long timestamp;
-    private byte[] previousHash;
+import java.io.Serializable;
+
+/**
+ * BlockHeader:
+ * - Infos die zur Berechnung des BlockId-Hash benötigt werden
+ * - hier sind alle Attribute zwingend notwendig
+ */
+public class BlockHeader implements Serializable {
+
+    private int sourceCodeVersion;
+    private int miningNonce = 0;
+    private long miningStartingTimestamp;
+    private byte[] previousBlockHash;
     private byte[] transactionListHash;
 
-    public BlockHeader(long timestamp, byte[] previousHash, byte[] transactionListHash) {
-        this.timestamp = timestamp;
-        this.previousHash = previousHash;
+    public BlockHeader(long miningStartingTimestamp, byte[] previousBlockHash, byte[] transactionListHash) {
+        this.miningStartingTimestamp = miningStartingTimestamp;
+        this.previousBlockHash = previousBlockHash;
         this.transactionListHash = transactionListHash;
     }
 
-    public int getVersion() {
-        return version;
+public byte[] getBlockHash() {          // Hash des BlockHeaders ist die ID des dazugehörigen Blocks
+        return SHA3Helper.hash256(this);
     }
 
-    public void setVersion(int version) {
-        this.version = version;
+    public void incrementMiningNonce() {
+        if (this.miningNonce == Integer.MAX_VALUE) {
+            throw new ArithmeticException("nonce to high");
+        }
+
+        this.miningNonce++;
     }
 
-    public int getNonce() {
-        return nonce;
+    public int getSourceCodeVersion() {
+        return sourceCodeVersion;
     }
 
-    public void setNonce(int nonce) {
-        this.nonce = nonce;
+    public void setSourceCodeVersion(int sourceCodeVersion) {
+        this.sourceCodeVersion = sourceCodeVersion;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public int getMiningNonce() {
+        return miningNonce;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setMiningNonce(int miningNonce) {
+        this.miningNonce = miningNonce;
     }
 
-    public byte[] getPreviousHash() {
-        return previousHash;
+    public long getMiningStartingTimestamp() {
+        return miningStartingTimestamp;
     }
 
-    public void setPreviousHash(byte[] previousHash) {
-        this.previousHash = previousHash;
+    public void setMiningStartingTimestamp(long miningStartingTimestamp) {
+        this.miningStartingTimestamp = miningStartingTimestamp;
+    }
+
+    public byte[] getPreviousBlockHash() {
+        return previousBlockHash;
+    }
+
+    public void setPreviousBlockHash(byte[] previousBlockHash) {
+        this.previousBlockHash = previousBlockHash;
     }
 
     public byte[] getTransactionListHash() {
@@ -53,4 +74,5 @@ public class BlockHeader {
     public void setTransactionListHash(byte[] transactionListHash) {
         this.transactionListHash = transactionListHash;
     }
+
 }
