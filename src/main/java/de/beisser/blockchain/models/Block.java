@@ -18,10 +18,17 @@ public class Block {
     }
 
     public Block(byte[] previousHash) {
-        this.transactionCount = this.transactions.size();
+        this.transactionCount = 0;
         this.transactions = new ArrayList<>();
         this.blockSizeInByte = SizeHelper.calculateBlockSize(this);
 
+        this.blockHeader = new BlockHeader(System.currentTimeMillis(), previousHash, getTransactionHash());
+    }
+
+    public Block(List<Transaction> transactions, byte[] previousHash) {
+        this.transactions = transactions;
+        this.transactionCount = transactions.size();
+        this.blockSizeInByte = SizeHelper.calculateBlockSize(this);
         this.blockHeader = new BlockHeader(System.currentTimeMillis(), previousHash, getTransactionHash());
     }
 

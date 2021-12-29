@@ -10,6 +10,10 @@ import java.io.Serializable;
 
 public class SHA3Helper {
 
+    public static String hash256AsHex(Serializable o) {
+        return Hex.toHexString(hash256(o));
+    }
+
     public static String hash256AsHexString(String parts) {
         return Hex.toHexString(hash256(parts));
     }

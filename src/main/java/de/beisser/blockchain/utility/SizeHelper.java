@@ -1,5 +1,6 @@
 package de.beisser.blockchain.utility;
 
+import de.beisser.blockchain.services.Blockchain;
 import de.beisser.blockchain.models.Block;
 import de.beisser.blockchain.models.Transaction;
 
@@ -17,4 +18,12 @@ public class SizeHelper {
                 BLOCK_META_DATA_SIZE_IN_BYTES;
     }
 
+    public static int calculateTransactionListSize(List<Transaction> transactions) {
+        return transactions.size() * TRANSACTION_SIZE_IN_BYTES;
+    }
+
+    public static int calculateTransactionCapacity() {
+        return (Blockchain.MAX_BLOCK_SIZE_IN_BYTES - SizeHelper.BLOCK_META_DATA_SIZE_IN_BYTES -
+                SizeHelper.BLOCK_HEADER_SIZE_IN_BYTES) / SizeHelper.TRANSACTION_SIZE_IN_BYTES;
+    }
 }
