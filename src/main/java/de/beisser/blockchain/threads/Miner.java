@@ -5,6 +5,9 @@ import de.beisser.blockchain.models.Transaction;
 import de.beisser.blockchain.services.Blockchain;
 import de.beisser.blockchain.services.DependencyManager;
 import de.beisser.blockchain.services.PendingTransactionsService;
+import de.beisser.blockchain.utility.SHA3Helper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,8 @@ import java.util.List;
  */
 public class Miner implements Runnable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Miner.class);
+
     private boolean mining = true;
     private List<MinerListener> listeners = new ArrayList<>();
     private boolean cancelBlock = false;
@@ -24,6 +29,9 @@ public class Miner implements Runnable {
 
     @Override
     public void run() {
+
+        LOGGER.info("Minder started");
+
         while (isMining()) {
             block = getNewBlockForMining();     // 1.
 
@@ -60,9 +68,14 @@ public class Miner implements Runnable {
     }
 
     private void blockMined(Block block) {
+
+        LOGGER.debug( "block mined" );
+
         if (block.getTransactions().size() > 0) {
             for (Transaction transaction : block.getTransactions()) {
                 transaction.setBlockId(block.getBlockHash());
+                LOGGER.info(
+                        transaction.getTransactionIdAsString( ) + "; " + SHA3Helper.digestToHex( transaction.getBlockId( ) ) );
             }
         }
 
@@ -84,10 +97,12 @@ public class Miner implements Runnable {
     }
 
     public void cancelBlock() {
+        LOGGER.info( "canceling block" );
         this.cancelBlock = true;
     }
 
     public void stopMining() {
+        LOGGER.info( "stopping mining" );
         this.mining = false;
     }
 

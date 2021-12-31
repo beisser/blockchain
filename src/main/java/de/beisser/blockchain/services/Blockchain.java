@@ -15,6 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * 1. Den Block- und den Transaktion-Cache unbedingt als ConcurrentHashMap, da Miner und Web-API nebenläufig darauf zugreifen werden
  *
  * 2. Difficulty entscheidet darüber wie viele Blöcke pro Sekunde erzeugt werden können (Muss je nach System angepasst werden)
+ *      - Difficulty wird hier in der Blockchain-Klasse definiert und geprüft
+ *      - Somit wissen die anderen Models (Transaction, Block, Blockheader) davon nichts
  *
  * 3. Prüfung ob die Aufgabe gelöst worden ist
  */
